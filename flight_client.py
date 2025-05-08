@@ -1,229 +1,105 @@
-from openai import OpenAI
-
-
-import pandas as pd
-
-# def analyze_flight_data(callsign, flight_number):
-#
-#     YOUR_API_KEY="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"
-#
-#     messages = [
-#         {
-#             "role": "system",
-#             "content": (
-#                 "You are an expert in aviation data analysis. Your task is to determine the airline name and the nature of a flight "
-#                 "based on the provided callsign and flight number. You should follow industry standards and common aviation patterns "
-#                 "to classify the flight accurately. Your response must be clear, structured, and formatted as plain text."
-#             ),
-#         },
-#         {
-#             "role": "user",
-#             "content": (
-#                 f"Input:\nCallsign: {callsign}\nFlight: {flight_number}\n\n"
-#                 "Task: Identify the airline and the nature of the flight based on the given details.\n\n"
-#                 "Guidelines:\n"
-#                 "1. Determine the airline name using industry-standard callsign prefixes:\n"
-#                 "    - THY / TK → Turkish Airlines\n"
-#                 "    - ET → Ethiopian Airlines\n"
-#                 "    - RED / HB → Red Cross (often medical/humanitarian flights)\n"
-#                 "    - BDR → BADR Airlines\n"
-#                 "    - CKS → Kalitta Air (Cargo)\n"
-#                 "    - KLM → KLM Royal Dutch Airlines\n"
-#                 "    - AFR → Air France\n"
-#                 "    - JAL → Japan Airlines\n\n"
-#                 "2. Identify the flight nature based on standard aviation classifications:\n"
-#                 "    - PASSENGER → Scheduled commercial passenger flights\n"
-#                 "    - CARGO → Dedicated freight flights\n"
-#                 "    - CHARTER → Private or specially arranged flights\n"
-#                 "    - FERRY → Non-revenue repositioning flights\n"
-#                 "    - MEDIVAC → Medical evacuation flights (e.g., Red Cross, emergency medical services)\n"
-#                 "    - MILITARY → Defense-related or government-operated flights\n\n"
-#                 "Examples:\n\n"
-#                 "Example 1:\n"
-#                 "Input:\n"
-#                 "Callsign: THY613\n"
-#                 "Flight: TK613\n"
-#                 "Output:\n"
-#                 "Company Name: Turkish Airlines\n"
-#                 "Flight Nature: PASSENGER\n\n"
-#                 "Example 2:\n"
-#                 "Input:\n"
-#                 "Callsign: RED912\n"
-#                 "Flight: HB-LTG\n"
-#                 "Output:\n"
-#                 "Company Name: Red Cross\n"
-#                 "Flight Nature: MEDIVAC\n\n"
-#                 "Example 3:\n"
-#                 "Input:\n"
-#                 "Callsign: CKS204\n"
-#                 "Flight: CKS204\n"
-#                 "Output:\n"
-#                 "Company Name: Kalitta Air\n"
-#                 "Flight Nature: CARGO\n\n"
-#                 "Output Format:\n"
-#                 "Company Name: [Determined Airline Name]\n"
-#                 "Flight Nature: [Determined Flight Nature]\n"
-#             ),
-#         }
-#     ]
-#
-#     client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
-#     response = client.chat.completions.create(
-#         model="sonar-pro",
-#         messages=messages,
-#     )
-#
-#     extracted_data = response.choices[0].message.content
-#
-#     return extracted_data
-
-
-
-from openai import OpenAI
-
-def insights_for_flight_data(data):
-
-    YOUR_API_KEY = "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"
-
-    messages = [
-        {
-            "role": "system",
-            "content": (
-                "You are a master Airplane live feeds analyst specialized in South Sudan airspace monitoring. "
-                "Your task is to filter and analyze flight data to identify aircraft passing through or landing in South Sudan airspace. "
-                "Provide accurate, actionable insights for the operations team focused on flight patterns and airspace utilization."
-            ),
-        },
-        {
-            "role": "user",
-            "content": (
-                f"Dataset:\n{data}\n\n"
-                "### Tasks ###\n"
-                "1. **Filter flights**: Return only flights that pass through, land in, or take off from South Sudan airspace.\n"
-                "   - **Limit output to 5 rows**.\n"
-                "   - **Include only these columns**: [flight_id, latitude, longitude, operator, registration, time, "
-                "origin, destination, altitude, aircraft_type].\n"
-                "Ignore all UN Flights and Redcross Flights. \n "
-                "   - **Check origin and destination fields** to confirm flights Not landing in or departing from South Sudan.\n"
-                "\n"
-                "2. **Analyze and provide Any 7 key insights, you can default to the below if you do not have anything interesting**:\n"
-                "\n"
-                "3. **Output must be valid JSON with the following strict format**:"
-                "{\n"
-                "    \"filtered_flights\": [\n"
-                "        { \"flight_id\": \"ABC123\", \"latitude\": \"7.6892\", \"longitude\": \"28.5212\", \"operator\": \"Ethiopian Airlines\", \"registration\": \"ET-AKF\", \"time\": \"2025-03-29 14:20:30\", \"origin\": \"Addis Ababa\", \"destination\": \"Juba\", \"altitude\": \"38000\", \"aircraft_type\": \"B787\" },\n"
-                "        ... (up to 5 rows) ...\n"
-                "    ],\n"
-                "    \"insights\": [\n"
-                "        { \"title\": \"Flights Landing/Taking Off\", \"description\": \"...\" },\n"
-                "        { \"title\": \"Common Routes\", \"description\": \"...\" },\n"
-                "        { \"title\": \"Regular Operators\", \"description\": \"...\" },\n"
-                "        { \"title\": \"Peak Times\", \"description\": \"...\" },\n"
-                "        { \"title\": \"Altitude Patterns\", \"description\": \"...\" },\n"
-                "    ]\n"
-                "}\n"
-            ),
-        }
-    ]
-    client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
-    response = client.chat.completions.create(
-        model="sonar-pro",
-        messages=messages,
-    )
-
-    return response.choices[0].message.content
-
-# print(insights_for_flight_data("https://cdn.wsform.com/wp-content/uploads/2020/06/industry.csv"))
-
 
 import requests
+import pandas as pd
+import traceback
 import json
+from datetime import datetime, timezone
 
-def generate_and_print_cleaned_gemini_output(prompt):
 
-    api_key = "AIzaSyBdPf2vNe06pjA6MKtTATtz3g3-pQZigqo"
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
-    headers = {'Content-Type': 'application/json'}
+class FlightDataFetcher:
+    """
+    Fetches recent flight data incrementally.
+    Includes extra timestamp debugging.
+    """
 
-    messages = [
-        {
-            "role": "system",
-            "content": (
-                "You are a master Airplane live feeds analyst specialized in South Sudan airspace monitoring. "
-                "Your task is to filter and analyze flight data to identify aircraft passing through or landing in South Sudan airspace. "
-                "Provide accurate, actionable insights for the operations team focused on flight patterns and airspace utilization."
-            ),
-        },
-        {
-            "role": "user",
-            "content": (
-                f"Dataset:\n{prompt}\n\n"
-                "### Tasks ###\n"
-                "1. **Filter flights**: Return only flights that pass through, land in, or take off from South Sudan airspace.\n"
-                "   - **Limit output to 5 rows**.\n"
-                "   - **Include only these columns**: [flight_id, latitude, longitude, operator, registration, time, "
-                "origin, destination, altitude, aircraft_type].\n"
-                "   - **Check origin and destination fields** to confirm flights landing in or departing from South Sudan.\n"
-                "\n"
-                "2. **Analyze and provide Any 7 key insights, you can default to the below if you do not have anything interesting**:\n"
-                "   - **Flights landing/taking off**: Identify flights with South Sudan as their origin or destination.\n"
-                "   - **Common routes**: Highlight frequent routes passing through South Sudan airspace.\n"
-                "   - **Regular operators**: Which airlines frequently use South Sudan airspace.\n"
-                "   - **Peak times**: When is South Sudan airspace most congested.\n"
-                "   - **Altitude patterns**: Common flight levels when crossing South Sudan.\n"
-                "\n"
-                "3. **Output must be valid JSON with the following strict format**:"
-                "{\n"
-                "    \"filtered_flights\": [\n"
-                "        { \"flight_id\": \"ABC123\", \"latitude\": \"7.6892\", \"longitude\": \"28.5212\", \"operator\": \"Ethiopian Airlines\", \"registration\": \"ET-AKF\", \"time\": \"2025-03-29 14:20:30\", \"origin\": \"Addis Ababa\", \"destination\": \"Juba\", \"altitude\": \"38000\", \"aircraft_type\": \"B787\" },\n"
-                "        ... (up to 5 rows) ...\n"
-                "    ],\n"
-                "    \"insights\": [\n"
-                "        { \"title\": \"Flights Landing/Taking Off\", \"description\": \"3 flights had South Sudan as their origin or destination during the analyzed period.\" },\n"
-                "        { \"title\": \"Common Routes\", \"description\": \"The route between Addis Ababa and Juba was the most frequent, with 5 flights observed.\" },\n"
-                "        { \"title\": \"Regular Operators\", \"description\": \"Ethiopian Airlines was the most frequent operator, accounting for 60% of observed flights.\" },\n"
-                "        { \"title\": \"Peak Times\", \"description\": \"The busiest period for South Sudan airspace was between 10:00 AM and 12:00 PM local time.\" },\n"
-                "        { \"title\": \"Altitude Patterns\", \"description\": \"Most flights crossed South Sudan airspace at altitudes between 37,000 and 39,000 feet.\" },\n"
-                "    ]\n"
-                "}\n"
-            ),
-        }
-    ]
+    def __init__(self, base_url, api_endpoint="/api/flights/recent", fetch_limit=200):
+        self.base_url = base_url
+        self.api_endpoint = api_endpoint
+        self.full_url = self.base_url.rstrip('/') + '/' + self.api_endpoint.lstrip('/')
+        self.fetch_limit = fetch_limit
+        self.last_processed_timestamp = None  # Initialize state
+        self.initial_fetch_done = False  # Track initial fetch explicitly
+        print(f"[Fetcher Init] URL: {self.full_url}, Limit: {self.fetch_limit}")
 
-    data = {
-        "contents": [{
-            "parts": [{"text": messages}]
-        }]
-    }
+    def fetch_next_batch(self):
+        params = {'limit': self.fetch_limit}
+        current_last_ts = self.last_processed_timestamp  # Store for comparison later
+        request_desc = f"Fetching records (limit={self.fetch_limit})"
 
-    try:
-        response = requests.post(url, headers=headers, data=json.dumps(data))
-        response.raise_for_status()
-        api_response = response.json()
-
-        # Attempt to extract the generated text
-        if 'candidates' in api_response and api_response['candidates']:
-            if 'content' in api_response['candidates'][0] and 'parts' in api_response['candidates'][0]['content']:
-                generated_text = ""
-                for part in api_response['candidates'][0]['content']['parts']:
-                    if 'text' in part:
-                        generated_text += part['text']
-                cleaned_output = {'generated_text': generated_text.strip()}
-                print("Cleaned Output (Dictionary):")
-                print(cleaned_output)
-                print("\nGenerated Text:")
-                print(cleaned_output['generated_text'])
-                return cleaned_output
-            else:
-                print("Failed to find 'content' or 'parts' in the API response.")
-                return None
+        if current_last_ts:
+            params['since'] = current_last_ts
+            request_desc = f"Fetching records since {current_last_ts} (limit={self.fetch_limit})"
         else:
-            print("Failed to find 'candidates' in the API response.")
-            return None
+            request_desc = f"Performing initial fetch (limit={self.fetch_limit})"
+            print("[Fetcher Debug] No last_processed_timestamp, performing initial fetch.")
 
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred during the API request: {e}")
-        return None
-    except json.JSONDecodeError:
-        print("Error decoding JSON response.")
-        return None
+        print(f"[{datetime.now(timezone.utc).isoformat(timespec='seconds')}] [Fetcher] {request_desc}...")
+        print(f"[Fetcher Debug] Request Params: {params}")
+
+        try:
+            response = requests.get(self.full_url, params=params, timeout=30)
+            print(f"[Fetcher Debug] API Response Status: {response.status_code}")
+            response.raise_for_status()
+            data = response.json()
+
+            if data:
+                print(f"    [Fetcher] Fetched {len(data)} records.")
+                self.initial_fetch_done = True  # Mark that we received something at least once
+                newest_timestamp_in_batch = None
+                try:
+                    # Find the maximum 'updated_at' timestamp in the received batch
+                    timestamps = [item['updated_at'] for item in data if 'updated_at' in item and item['updated_at']]
+                    if timestamps:
+                        newest_timestamp_in_batch = max(timestamps)
+                        print(f"    [Fetcher Debug] Newest timestamp found in batch: {newest_timestamp_in_batch}")
+
+                        # --- Timestamp Update Logic ---
+                        # Only update if the new timestamp is different and actually newer
+                        # Use "1970..." as a safe starting point for comparison if current_last_ts is None
+                        compare_ts = current_last_ts or "1970-01-01T00:00:00Z"
+                        if newest_timestamp_in_batch > compare_ts:
+                            print(
+                                f"    [Fetcher] SUCCESS: New timestamp {newest_timestamp_in_batch} > {compare_ts}. Updating state.")
+                            self.last_processed_timestamp = newest_timestamp_in_batch
+                        else:
+                            print(
+                                f"    [Fetcher Debug] SKIPPING state update: Newest timestamp {newest_timestamp_in_batch} is NOT > {compare_ts}")
+                            # This is likely why subsequent fetches find nothing if timestamps repeat or aren't strictly increasing
+
+                    else:
+                        print(
+                            "    [Fetcher] Warning: Received data but no valid 'updated_at' timestamps found. State not updated.")
+                except Exception as e:
+                    print(f"    [Fetcher] Error processing timestamps: {e}. State not updated.")
+
+                df = pd.DataFrame(data)
+                # Add minimal checks/conversions if needed
+                return df
+            else:
+                # API returned empty list []
+                if not self.initial_fetch_done and current_last_ts is None:
+                    print(f"    [Fetcher] No records returned on INITIAL fetch.")
+                else:
+                    print(f"    [Fetcher] No NEW records returned by API since {current_last_ts}.")
+                self.initial_fetch_done = True  # Mark initial attempt done even if empty
+                return pd.DataFrame()  # Return empty DataFrame
+
+        # --- Error Handling ---
+        except requests.exceptions.ConnectionError as e:
+            print(f"\n!!! [Fetcher] Connection Error: {e}"); return None
+        except requests.exceptions.Timeout:
+            print(f"\n!!! [Fetcher] Timeout Error."); return None
+        except requests.exceptions.RequestException as e:
+            print(f"\n!!! [Fetcher] HTTP Error: {e}.")
+            try:
+                print(f"    Response Status Code: {e.response.status_code}, Body: {e.response.text[:200]}...")
+            except:
+                pass
+            return None
+        except json.JSONDecodeError as e:
+            print(f"\n!!! [Fetcher] JSON Decode Error: {e}.")
+            try:
+                print(f"    Raw Response Text: {response.text[:200]}...")
+            except:
+                pass
+            return None
